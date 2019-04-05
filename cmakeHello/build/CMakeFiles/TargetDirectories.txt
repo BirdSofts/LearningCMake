@@ -1,0 +1,3 @@
+C:/Users/Mehrdad/Source/Repos/cmakeHello/build/CMakeFiles/cmakeHello.dir
+C:/Users/Mehrdad/Source/Repos/cmakeHello/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/Mehrdad/Source/Repos/cmakeHello/build/CMakeFiles/ZERO_CHECK.dir
