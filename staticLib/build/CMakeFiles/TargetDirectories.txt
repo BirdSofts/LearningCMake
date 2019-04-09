@@ -1,4 +1,0 @@
-C:/Users/Mehrdad/Source/Repos/staticLib/build/CMakeFiles/staticLib.dir
-C:/Users/Mehrdad/Source/Repos/staticLib/build/CMakeFiles/INSTALL.dir
-C:/Users/Mehrdad/Source/Repos/staticLib/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/Mehrdad/Source/Repos/staticLib/build/CMakeFiles/ZERO_CHECK.dir

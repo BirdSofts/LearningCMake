@@ -1,3 +1,0 @@
-C:/Users/Mehrdad/Source/Repos/libUsage/build/CMakeFiles/libUsage.dir
-C:/Users/Mehrdad/Source/Repos/libUsage/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/Mehrdad/Source/Repos/libUsage/build/CMakeFiles/ZERO_CHECK.dir

@@ -1,0 +1,53 @@
+// ********************************************************************************
+// <summary>
+/// 
+/// </summary>
+/// <created>ʆϒʅ,09.04.2019</created>
+/// <changed>ʆϒʅ,09.04.2019</changed>
+// ********************************************************************************
+
+// references:
+// https://docs.microsoft.com/en-us/windows/desktop/menurc/versioninfo-resource
+// https://stackoverflow.com/questions/6693100/how-to-generate-windows-dll-versioning-information-with-cmake
+
+
+#include <resource.h>
+#include <winres.h>
+
+
+LANGUAGE    LANG_ENGLISH, SUBLANG_DEFAULT
+
+VS_VERSION_INFO         VERSIONINFO
+    FILEVERISON         FILE_VERSION_RESOURCE
+    PRODUCTVERSION      PRODUCT_VERSION_RESOURCE
+    FILEFLAGMASK        0x3fl
+#ifdef _DEBUG
+    FILEFLAG      0x1L
+#else
+    FILEFLAG      0x0L
+#endif
+    FILEOS        0x40004L
+    FILETYPE      0x0L
+    FILESUBTYPE   0x0L
+
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0" // Neutral language (US.English), Unicode
+        BEGIN
+            VALUE "Comments",         PRODUCT_COMMENTS
+            VALUE "CompanyName",      PRODUCT_COMPANY_NAME
+            VALUE "FileDescription",  PRODUCT_FILE_DESCRIPTION
+            VALUE "FileVersion",      FILE_VERSION_RESOURCE_STR
+            VALUE "InternalName",     PRODUCT_INTERNAL_NAME
+            VALUE "LegalCopyright",   PRODUCT_COMPANY_COPYRIGHT
+            VALUE "OriginalFilename", PRODUCT_ORIGINAL_FILENAME
+            VALUE "ProductName",      PRODUCT_BUNDLE
+            VALUE "ProductVersion",   PRODUCT_VERSION_RESOURCE_STR
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x407, 04b0 // German, Unicode
+    END
+END
