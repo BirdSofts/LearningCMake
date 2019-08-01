@@ -38,11 +38,19 @@ I appreciate any contribution from anyone, who sees that the project deserves hi
 
 #References
 <table>
-<tr><a href="https://cmake.org/cmake/help/latest/">CMake Documentation</a></tr>
-<tr><a href="http://derekmolloy.ie/hello-world-introductions-to-cmake/">Introduction to CMake by Example</a></tr>
-<tr><a href="https://github.com/nholthaus/cmake-cpp-project">cmake-cpp-project on GitHub</a></tr>
-<tr><a href="https://stackoverflow.com">Stackoverflow</a></tr>
+<tr>
+<td><a href="https://cmake.org/cmake/help/latest/">CMake Documentation</a></td>
+</tr>
+<tr>
+<td><a href="http://derekmolloy.ie/hello-world-introductions-to-cmake/">Introduction to CMake by Example</a></td>
+</tr>
+<tr>
+<td><a href="https://github.com/nholthaus/cmake-cpp-project">cmake-cpp-project on GitHub</a></td>
+</tr>
+<tr>
+<td><a href="https://stackoverflow.com">Stackoverflow</a></td>
+</tr>
 </table>
 
 # Copyright
-This is not a freeware and the idea itself, the source code and the literature within is copyrighted. The Source code only can just be used for teaching purposes and in limited ways. For any other uses the creator's written permission and acknowledgement is needed.
+This is not a freeware and the idea itself, the source code and the literature within is copyrighted. Most of the code is learned and inspired from online references and the addition to them can just be used as teaching materials. For any other uses the creator's written permission and acknowledgement is needed.
