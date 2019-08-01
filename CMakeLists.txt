@@ -105,9 +105,6 @@ list(APPEND RESOURCES
 # a subfolder for each subproject isn't obligatory.
 add_subdirectory(<sourceDir> [<binaryDir>])
 
-# build type settings
-set(CMAKE_BUILD_TYPE Release)
-
 # pre-installed dependencies
 # features: sets some variables - defines imported targets - supports components
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
@@ -270,38 +267,43 @@ endif()
 #------------------- Commands -------------------
 
 #------------------- Directory -------------------
-# directory listing                               tree
-# create directory				mkdir <dir> (not portable)
-#                                                 cmake -E make_directory
-# moving between directories                      cd <dir> cd.. cd\
+# directory listing                  tree
+# create directory                   mkdir <dir> (not portable)
+#                                    cmake -E make_directory
+# moving between directories         cd <dir> cd.. cd\
 
 #------------------- Build -------------------
 # build-system:
 ######################### Best practice:
 # current directory: project root directory
-# build in directory                              cmake chdir <dir>
-# build project                                   cmake --build <dir> [--clean-first]
+# change directory                   chdir build-path
+# build in directory                 cmake source-path
+#                                    cmake ..\
+# build project                      cmake --build <dir> [--clean-first]
 
-# build (elapsed time)                            cmake -E time cmake <dir>
+# build (elapsed time)               cmake -E time cmake <dir>
 
-# a complex example                               cmake --build build --target ProjectName --config Release --clean-first
+# a complex command:
+#     cmake --build build --target ProjectName --config Release --clean-first
 
 # Additionally:
-# build to current				cmake <source-path>
-# Notes:  Current: Probably build folder. Source folder defined in CMake_Notes.txt (..\src\)
-# build to current				cmake .
-#                                                 cmake --build .
-# build to path                                   cmake <existing-build-path>
+# build to current                   cmake <source-path>
+# Notes:
+# Current: Probably build folder.
+# Source folder must be defined in CMake_Notes.txt (..\src\)
+# build to current                   cmake .
+#                                    cmake --build .
+# build to path                      cmake <existing-build-path>
 # Note: Settings must contain the path to source.
-# didn't work :)				cmake -S <src-path> -B <build-path>
+# didn't work :)                     cmake -S <src-path> -B <build-path>
 # probably needs some creepy settings to be set! :)
 
 # further information:
 # https://cmake.org/cmake/help/v3.14/manual/cmake.1.html
 
 #------------------- Useful -------------------
-# present CMake version			cmake -version
-# processing script (.cmake files)                cmake -P file.cmake
+# present CMake version              cmake -version
+# processing script (.cmake files)   cmake -P file.cmake
 
 #********************************************************************************
 #********************************************************************************

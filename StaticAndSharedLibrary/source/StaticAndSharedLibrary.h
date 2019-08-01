@@ -3,19 +3,20 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,03.04.2019</created>
-/// <changed>ʆϒʅ,10.04.2019</changed>
+/// <changed>ʆϒʅ,30.07.2019</changed>
 // ********************************************************************************
 
 // StaticAndSharedLibrary.h : Include file for standard system include files,
 // or project specific include files.
 
 
-#pragma once
+#ifndef STATICANDSHAREDLIBRARY_H
+#define STATICANDSHAREDLIBRARY_H
 
 
-#if WIN32
-#define WIN32_LEAN_AND_MEAN
-#endif // WIN32
+//#if WIN32
+//#define WIN32_LEAN_AND_MEAN // rarely-used stuff exclusion
+//#endif // WIN32
 
 
 #include "StaticAndSharedLibrary_EXPORTS.h"
@@ -42,4 +43,8 @@ public:
   void Print ( void );
 };
 
+
 // TODO: Reference additional headers your program requires here.
+
+
+#endif // !STATICANDSHAREDLIBRARY_H
