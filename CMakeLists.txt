@@ -3,15 +3,20 @@
 #/ 
 #/ </summary>
 #/ <created>ʆϒʅ,30.03.2019</created>
-#/ <changed>ʆϒʅ,10.04.2019</changed>
+#/ <changed>ʆϒʅ,23.08.2019</changed>
 # *******************************************************************************************
 
-#********************************************************************************
-#********************************************************************************
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #------------------- CMake -------------------
-# description: cross-platform, open-source, widely used and fast build system, that build, test and package software.
-# method: control compilation process through simple platform and compiler independent configuration files.
+#
+#-- description: cross-platform, open-source, widely used and fast build system, that build, test and package software.
+#-- method: control compilation process through simple platform and compiler independent configuration files.
+
 # with other words: generation of native makefiles and workspaces, that are usable in wished complier environment.
+
 # CMakeCache.text: compiler and platform test results. (modification and rerun of CMake is possible.)
 # CMake GUI: compilation, it also provides graphical cache editor.
 
@@ -19,20 +24,25 @@
 # Fortunately I saw some MS-Dos commands within them! :)
 # There is also a lot of known words here or there between a lot of creepy settings! :)
 # All in all I personally have a lot of hope at constant CMake improvement! :)
+# Upper case words don't ever give up yelling! :)
 
 # Nerd Snow's proposal
 # pleas get rid of not needed and old stuff! :)
 
-#********************************************************************************
-#********************************************************************************
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #------------------- CMakeLists.txt -------------------
+#
 # recommanded:
-# ability to build a project as sub-projects additionally to stand-alone.
+# provide the ability to build a project as sub-projects additionally to stand-alone.
 
 # not recommanded:
 # assumption that the root of project is build root.
 # modification of global compile/link flags.
 # practicing any global changes.
+
 
 #------------------- CMake settings -------------------
 # establish version and policy settings for future compatibility
@@ -41,6 +51,13 @@ cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 
 # build type setting
 set(CMAKE_BUILD_TYPE Release)
+
+# verbose make file: printing current command before execution (troubleshooting build related issues)
+set(CMAKE_VERBOSE_MAKEFILE true)
+
+# produced code is executable regardless of the memory location of shared libraries
+set(CMAKE_POSITION_INDEPENDENT_CODE on)
+
 
 #------------------- Project settings -------------------
 
@@ -109,6 +126,27 @@ add_subdirectory(<sourceDir> [<binaryDir>])
 # features: sets some variables - defines imported targets - supports components
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
+# to include git branch name to project name
+find_package(Git)
+if(GIT_FOUND)
+          execute_process(
+                    COMMAND ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
+                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                    OUTPUT_VARIABLE BRANCH
+                    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+          execute_process(
+                    COMMAND ${GIT_EXECUTABLE} describe --abbrev=0 --tags
+                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                    OUTPUT_VARIABLE VERSION
+                    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+          set(PROJECT_NAME ${TARGET_NAME}-S{BRANCH})
+else()
+          set(PROJECT_NAME ${TARGET_NAME})
+endif()
+
+
 #------------------- Source settings -------------------
 
 # manual addition, file after file (explicit reference to each file)
@@ -127,6 +165,7 @@ if(WIN32)
           list(APPEND SOURCE_FILES ${HEADER_FILES})
 endif()
 
+
 #------------------- Compile Configurations and Flags -------------------
 
 # setting compile definitions (preprocessor constants)
@@ -137,8 +176,9 @@ target_compile_definitions(${TARGET_NAME}
 # add_definitions() command is to be avoided
 # adding definitions to CMAKE_<LANG>_FLAGS is to be avoided
 
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 17)
+# make files with the C++14 standard enabled in source code are compilable (some compilers needs)
+set(CMAKE_CXX_STANDARD_REQUIRED on)
+set(CMAKE_CXX_STANDARD 11, 14, 17)
 
 # setting compile options/flags
 if(MSVC)
@@ -171,6 +211,7 @@ target_compile_features(${TARGET_NAME}
 # further information:
 # https://cmake.org/cmake/help/latest/manual/cmake-compile-features.7.html#
 
+
 #------------------- Executable generation -------------------
 
 # generate the project's executable target.
@@ -180,6 +221,7 @@ add_executable(${TARGET_NAME}
 )
 add_executable(${TARGET_NAME} ${SOURCE_FILES} ${RESOURCES})
 add_executable(my::${TARGET_NAME} ALIAS ${TARGET_NAME})
+
 
 #------------------- library generation -------------------
 
@@ -206,28 +248,80 @@ generate_export_header(${TARGET_NAME}
 # namespaced aliases for libraries is strongly recommanded.
 # avoid STATIC/SHARED libraries, unless there is no other way
 
+
 #------------------- Inclusion, Dependency and library usage -------------------
 
-# setting include directories
-target_include_directories(${TARGET_NAME}
-          PUBLIC include
-          PRIVATE src
-)
-# recommanded:
-# include_directories() is to be avoided
+# platform architecture (different architecture inclusion)
+# for detecting x86 use 4 as size 
+if(${CMAKE_SIZEOF_VOID_P} EQUAL "8")
+set(PROJECTNAME_ARCHITECTURE "x64")
+else()
+set(PROJECTNAME_ARCHITECTURE "x86")
+endif()
+#
+if(MSVC)
+if(CMAKE_CL_64 OR ${PROJECTNAME_ARCHITECTURE} EQUAL "x64")
+# ...
+else()
+# ...
+endif()
+endif()
 
-# PRIVATE: useable for the target
-# PUBLIC: usable for the target and all other targets with linkage against it
-# INTERFACE: useable for targets with linkage against it
-target_<usage requirement>(${TARGET_NAME}
-          <PRIVATE|PUBLIC|INTERFACE> <lib> ...
-          [<PRIVATE|PUBLIC|INTERFACE> <lib> ...]
-)
+# CMake scripts that find third-party libraries
+# each inclusion and linkage to a different library can be written in a .cmake file,
+# considering their differences and having them organized
+# for more infos refer to https://pmateusz.github.io/c++/cmake/2018/03/11/cmake-project-setup.html
+list(APPEND MODULE_PATH path_to_cmake_scripts)
+# CMake scripts that find third-party libraries
+find_package (cmakeScriptName REQUIRED)
+#...
 
-# setting library dependencies
+set(LIBRARY_ROOT_DIR path_to_root)
+if(NOT LIBRARY_ROOT_DIR)
+message(FATAL_ERROR "Library root path couldn't be found!")
+endif()
+
+set(_INCLUDE_DIRECTORY ${LIBRARY_ROOT_DIR}/include)
+set(_LIBRARY_DIRECTORY ${LIBRARY_ROOT_DIR})
+message(${_INCLUDE_DIRECTORY})
+message(${_LIBRARY_DIRECTORY})
+
+# note that CMake is perfectly developed for different platforms and systems,
+# thus there is not need to mention the extension of filename.
+find_path(LIBRARY_FILE fileName HINTS ${_LIBRARY_DIRECTORY} PATH_SUFFIXES lib)
+if (NOT LIBRARY_FILE)
+message(FATAL_ERROR "Library file couldn't be found!")
+endif()
+
+# creation of a list of all library headers
+list(APPEND HEADER_FILE ${...})
+
+# set as helper variable (hidden and unavailable for an external assignment)
+mark_as_advanced(_INCLUDE_DIRECTORY _LIBRARY_DIRECTORY)
+
+# setting the path to include directories
+#set(INCLUDE_DIRECTORY path_to_directory)
+# appending the needed header/source files
+#if(WIN32)
+#          list(APPEND SOURCE_FILES ${INCLUDE_DIRECTORY}/fileName)
+#endif()
+
+# in addition:
+# additional libraries
+#list(APPEND LIBRARIES)
+# duplicate library dependencies removal
+#list(REMOVE_DUPLICATES LIBRARIES)
+
+# setting library dependencies:
+# note that a code generation command should precede the inclusions or like against any library
+set(LIBRAY_DIRECTORY path_to_directory)
+
+# linking against the needed libraries:
 target_link_libraries(${TARGET_NAME}
-          PUBLIC my::${LIBRARY_ONE_NAME}
-          PRIVATE my::${LIBRARY_TWO_NAME}
+          PUBLIC ${LIBRAY_DIRECTORY}/fileName
+          PRIVATE ...
+          PUBLIC my::${LIBRARY_ONE_NAME} # namespaced
+          PRIVATE my::${LIBRARY_TWO_NAME} # namespaced
 )
 # recommanded:
 # a link against namespaced targets has preference
@@ -235,7 +329,25 @@ target_link_libraries(${TARGET_NAME}
 # the link_libraries() and link_directories() commands are to be avoided
 # no need: calling add_dependencies()
 
-# pre and post build event
+# different application entry points: main, WinMain
+set_target_properties(${TARGET_NAME} PROPERTIES
+          LINK_FLAGS /SUBSYSTEM:CONSOLE
+          LINK_FLAGS /SUBSYSTEM:WINDOWS
+)
+
+# including the include directories
+target_include_directories(${TARGET_NAME} BEFORE
+          PUBLIC ${INCLUDE_DIRECTORY}
+          PRIVATE ...
+)
+# recommanded:
+# include_directories() is to be avoided
+# notes:
+# PRIVATE: useable for the target
+# PUBLIC: usable for the target and all other targets with linkage against it
+# INTERFACE: useable for targets with linkage against it
+
+# pre and post build event:
 # copy library into target directory
 # must follow a generation event
 add_custom_command(TARGET ${TARGET_NAME} PRE_BUILD
@@ -244,12 +356,14 @@ add_custom_command(TARGET ${TARGET_NAME} PRE_BUILD
           $<TARGET_FILE_DIR:${TARGET_NAME}>
 )
 
+
 #------------------- Install settings -------------------
 
 # defining the install location
 install(TARGETS ${TARGET_NAME} DESTINATION _Path)
 
 INCLUDE(InstallRequiredSystemLibraries)
+
 
 #------------------- best Practices -------------------
 # 1. with less variables the code is more robust and readable
@@ -262,98 +376,12 @@ endif()
 # reasons:
 # think of expansion for platform specific libraries, giving a very hard start to contributors, headache while maintaining
 
-#********************************************************************************
-#********************************************************************************
-#------------------- Commands -------------------
 
-#------------------- Directory -------------------
-# directory listing                  tree
-# create directory                   mkdir <dir> (not portable)
-#                                    cmake -E make_directory
-# moving between directories         cd <dir> cd.. cd\
-
-#------------------- Build -------------------
-# build-system:
-######################### Best practice:
-# current directory: project root directory
-# change directory                   chdir build-path
-# build in directory                 cmake source-path
-#                                    cmake ..\
-# build project                      cmake --build <dir> [--clean-first]
-
-# build (elapsed time)               cmake -E time cmake <dir>
-
-# a complex command:
-#     cmake --build build --target ProjectName --config Release --clean-first
-
-# Additionally:
-# build to current                   cmake <source-path>
-# Notes:
-# Current: Probably build folder.
-# Source folder must be defined in CMake_Notes.txt (..\src\)
-# build to current                   cmake .
-#                                    cmake --build .
-# build to path                      cmake <existing-build-path>
-# Note: Settings must contain the path to source.
-# didn't work :)                     cmake -S <src-path> -B <build-path>
-# probably needs some creepy settings to be set! :)
-
-# further information:
-# https://cmake.org/cmake/help/v3.14/manual/cmake.1.html
-
-#------------------- Useful -------------------
-# present CMake version              cmake -version
-# processing script (.cmake files)   cmake -P file.cmake
-
-#********************************************************************************
-#********************************************************************************
-#------------------- CMakeSettings.json -------------------
-
-# useful variables for root:
-#     ${projectDir}           ${name}
-#     $ENV{ProgramFiles}      $ENV{UserProfile}
-
-#********************************************************************************
-#********************************************************************************
-#------------------- References -------------------
-# https://www.slideshare.net/DanielPfeifer1/cmake-48475415
-# http://derekmolloy.ie/hello-world-introductions-to-cmake/
-# https://github.com/nholthaus/cmake-cpp-project
-# https://stackoverflow.com
-# https://github.com/halex2005/CMakeHelpers
-# https://docs.microsoft.com/
-# https://cmake.org/cmake/help/latest/
-
-
-
-
-#********************************************************************************
-#********************************************************************************
 #------------------- in Addition -------------------
 
 # automate addition of CMAKE_CURRENT_SOURCE_DIR and CMAKE_CURRENT_BINARY_DIR
 # mainly useful, when generated files in build tree are included by files in source tree (whatever the file may be!)
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
-
-# to include git branch name to project name
-find_package(Git)
-if(GIT_FOUND)
-          execute_process(
-                    COMMAND ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
-                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-                    OUTPUT_VARIABLE BRANCH
-                    OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-          execute_process(
-                    COMMAND ${GIT_EXECUTABLE} describe --abbrev=0 --tags
-                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-                    OUTPUT_VARIABLE VERSION
-                    OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-          set(PROJECT_NAME ${TARGET_NAME}-S{BRANCH})
-else()
-          set(PROJECT_NAME ${TARGET_NAME})
-endif()
 
 # addition of all source code files present in a path
 # file(GLOB) isn't a recommanded practice in CMake documentation
@@ -369,11 +397,78 @@ source_group(source REGULAR_EXPRESSION .*[.]cpp)
 source_group(header REGULAR_EXPRESSION .*[.]h)
 source_group(continuous_integration REGULAR_EXPRESSION .*[.]yml)
 
-# additional libraries
-list(APPEND LIBRARIES)
-          
-)
-# duplicate library dependencies removal
-list(REMOVE_DUPLICATES LIBRARIES)
 
 
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#------------------- Commands -------------------
+#
+#------------------- Directory -------------------
+# directory listing                   tree
+# create directory                    mkdir <dir> (not portable)
+#                                     cmake -E make_directory
+# moving between directories          cd <dir> cd.. cd\
+
+
+#------------------- Build -------------------
+# build-system:
+
+#------- Best practice:
+# current directory: project root directory
+# change directory                    chdir build-path
+# build in directory                  cmake [-A Win32, x64, ARM, ARM64] source-path
+# source directory example            cmake ..\
+# build project                       cmake --build [--clean-first] <dir>
+#-------
+
+# build (elapsed time)                cmake -E time cmake <dir>
+
+# example of a complex command:
+#     cmake --build build --target ProjectName --config Release --clean-first
+
+# Additionally:
+# build to current                    cmake <source-path>
+# Notes:
+# Current: Probably build folder.
+# Source folder must be defined in CMake_Notes.txt (..\src\)
+# build to current                    cmake .
+#                                     cmake --build .
+# build to path                       cmake <existing-build-path>
+# Note: Settings must contain the path to source.
+# didn't work :)                      cmake -S <src-path> -B <build-path>
+# probably needs some creepy settings to be set! :)
+
+# further information:
+# https://cmake.org/cmake/help/v3.14/manual/cmake.1.html
+
+
+#------------------- Useful -------------------
+# present CMake version               cmake -version
+# processing script (.cmake files)    cmake -P file.cmake
+
+
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#------------------- CMakeSettings.json -------------------
+#
+# useful variables (usable in CMakeList.txt):
+#     ${projectDir}
+#     ${name}
+#     $ENV{ProgramFiles}
+#     $ENV{UserProfile}
+
+
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#------------------- References -------------------
+# https://www.slideshare.net/DanielPfeifer1/cmake-48475415
+# http://derekmolloy.ie/hello-world-introductions-to-cmake/
+# https://pmateusz.github.io
+# https://github.com/nholthaus/cmake-cpp-project
+# https://stackoverflow.com
+# https://github.com/halex2005/CMakeHelpers
+# https://docs.microsoft.com/
+# https://cmake.org/cmake/help/latest/

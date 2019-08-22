@@ -45,6 +45,9 @@ I appreciate any contribution from anyone, who sees that the project deserves hi
 <td><a href="http://derekmolloy.ie/hello-world-introductions-to-cmake/">Introduction to CMake by Example</a></td>
 </tr>
 <tr>
+<td><a href="https://pmateusz.github.io">Building Pyramids/a></td>
+</tr>
+<tr>
 <td><a href="https://github.com/nholthaus/cmake-cpp-project">cmake-cpp-project on GitHub</a></td>
 </tr>
 <tr>
