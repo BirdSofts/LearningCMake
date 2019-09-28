@@ -4,14 +4,18 @@
 # User-specific files (VS-Extensions):
 *.favdoc
 
-# User-specific files
+# User-specific files (VS)
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
 
+# qtcreator generated files
+*.pro.user*
+
 # build results in build directory
 build/
+build*/
 
 # build results in cmake-build-debug directory (CLion)
 cmake-build-debug/

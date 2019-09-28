@@ -1,6 +1,6 @@
 # Introduction 
-After some time put on learning build systems, I saw the need of small and comprehensible notes on the most important concepts of using CMake as build system. I hope it can help other developers too.
-The language of examples and projects is C++. The following is just a brief start, furthermore, if needed, one must add to his acquired knowledge.
+After some time put on learning build systems, I saw the need of some small and comprehensible notes on most important concepts when using CMake as build system. I hope it can help other developers too.
+The language of examples and projects is C++. The following is just important notes, furthermore, if needed, one must add to his acquired knowledge.
 
 <table>
 <tr>
@@ -45,7 +45,7 @@ I appreciate any contribution from anyone, who sees that the project deserves hi
 <td><a href="http://derekmolloy.ie/hello-world-introductions-to-cmake/">Introduction to CMake by Example</a></td>
 </tr>
 <tr>
-<td><a href="https://pmateusz.github.io">Building Pyramids/a></td>
+<td><a href="https://pmateusz.github.io">Building Pyramids</a></td>
 </tr>
 <tr>
 <td><a href="https://github.com/nholthaus/cmake-cpp-project">cmake-cpp-project on GitHub</a></td>
@@ -56,4 +56,4 @@ I appreciate any contribution from anyone, who sees that the project deserves hi
 </table>
 
 # Copyright
-This is not a freeware and the idea itself, the source code and the literature within is copyrighted. Most of the code is learned and inspired from online references and the addition to them can just be used as teaching materials. For any other uses the creator's written permission and acknowledgement is needed.
+The literature and all the known and unknown ideas provided within the following learning resource is copyrighted. On the other hand, so far the source code is concerned, most of which is learned and inspired from online references and the addition to them can be used under the licence terms provided with the software itself.

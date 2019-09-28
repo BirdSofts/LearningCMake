@@ -3,13 +3,21 @@
 #/ 
 #/ </summary>
 #/ <created>ʆϒʅ,30.03.2019</created>
-#/ <changed>ʆϒʅ,23.08.2019</changed>
+#/ <changed>ʆϒʅ,28.09.2019</changed>
 # *******************************************************************************************
 
 
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#-----------------------------------------------------------------------------------------------------------
+## Note that the projects in this repository are perfectly compilable using CMake,
+## each and every one from the corresponding directory,
+## therefore don't pay attention to the errors of this CMake document.
+## This document contains the different, learnt and experienced aspects, while fighting a way through CMake. :)
+#-----------------------------------------------------------------------------------------------------------
+
+
+#-----------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------
 #------------------- CMake -------------------
 #
 #-- description: cross-platform, open-source, widely used and fast build system, that build, test and package software.
@@ -30,9 +38,9 @@
 # pleas get rid of not needed and old stuff! :)
 
 
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#-----------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------
 #------------------- CMakeLists.txt -------------------
 #
 # recommanded:
@@ -70,11 +78,11 @@ set(PROJECT_NAME ${TARGET_NAME})
 # a direct call is needed and not through function, macro or include.
 # if not present at top, CMake adds an implicit call to this function.
 project(${PROJECT_NAME}
-          VERSION 0.1.0.0 #[Version <major>[.<minor>[.<patch>[.<tweak>]]]]
-          DESCRIPTION "CMake notes and examples" #[]
-          HOMEPAGE_URL "https://github.com/BirdSofts/LearningCMake" #[]
-          LANGUAGES CXX #[]
-)
+  VERSION 0.1.0.0 #[Version <major>[.<minor>[.<patch>[.<tweak>]]]]
+  DESCRIPTION "CMake notes and examples" #[]
+  HOMEPAGE_URL "https://github.com/BirdSofts/LearningCMake" #[]
+  LANGUAGES CXX #[]
+  )
 
 # further information:
 # https://cmake.org/cmake/help/latest/command/configure_file.html#
@@ -103,19 +111,19 @@ set(PRODUCT_ORIGINAL_FILENAME "LearningCMake.exe")
 set(PRODUCT_BUNDLE "LearningCMake")
 
 configure_file(
-          ${ROOT}/LearningCMake.rc
-          ${CMAKE_CURRENT_SOURCE_DIR}/${TARGET_NAME}.rc
-COPYONLY)
+  ${ROOT}/LearningCMake.rc
+  ${CMAKE_CURRENT_SOURCE_DIR}/${TARGET_NAME}.rc
+  COPYONLY)
 
 configure_file(
-          ${ROOT}/resource.h
-          ${CMAKE_CURRENT_SOURCE_DIR}/resource.h
-@ONLY)
+  ${ROOT}/resource.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/resource.h
+  @ONLY)
 
 list(APPEND RESOURCES
-          ${TARGET_NAME}.rc
-          resource.h
-)
+  ${TARGET_NAME}.rc
+  resource.h
+  )
 
 # to embed projects as sub-projects
 # for each sub-project CMake creates a Makefile/Solution.
@@ -129,21 +137,21 @@ find_package(Qt5 REQUIRED COMPONENTS Widgets)
 # to include git branch name to project name
 find_package(Git)
 if(GIT_FOUND)
-          execute_process(
-                    COMMAND ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
-                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-                    OUTPUT_VARIABLE BRANCH
-                    OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-          execute_process(
-                    COMMAND ${GIT_EXECUTABLE} describe --abbrev=0 --tags
-                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-                    OUTPUT_VARIABLE VERSION
-                    OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-          set(PROJECT_NAME ${TARGET_NAME}-S{BRANCH})
+  execute_process(
+    COMMAND ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE BRANCH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+  execute_process(
+    COMMAND ${GIT_EXECUTABLE} describe --abbrev=0 --tags
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+  set(PROJECT_NAME ${TARGET_NAME}-S{BRANCH})
 else()
-          set(PROJECT_NAME ${TARGET_NAME})
+  set(PROJECT_NAME ${TARGET_NAME})
 endif()
 
 
@@ -154,15 +162,15 @@ set(SOURCES "src/CMakeProject1.cpp" "src/CMakeProject1.h")
 
 # explicit addition of header files into a list
 list(APPEND HEADER_FILES
-          src/file.h
-)
+  src/file.h
+  )
 # explicit addition of source files into a list
 list(APPEND SOURCE_FILES
-          src/file.cpp
-)
+  src/file.cpp
+  )
 # appending headers to source on windows (needed for Visual Studio)
 if(WIN32)
-          list(APPEND SOURCE_FILES ${HEADER_FILES})
+  list(APPEND SOURCE_FILES ${HEADER_FILES})
 endif()
 
 
@@ -170,8 +178,8 @@ endif()
 
 # setting compile definitions (preprocessor constants)
 target_compile_definitions(${TARGET_NAME}
-          PRIVATE SRC_DIR=${TARGET_SOURCE_DIR}
-)
+  PRIVATE SRC_DIR=${TARGET_SOURCE_DIR}
+  )
 # recommanded:
 # add_definitions() command is to be avoided
 # adding definitions to CMAKE_<LANG>_FLAGS is to be avoided
@@ -182,13 +190,13 @@ set(CMAKE_CXX_STANDARD 11, 14, 17)
 
 # setting compile options/flags
 if(MSVC)
-          target_compile_options(
-#                    PUBLIC
-)
+  target_compile_options(
+    #                    PUBLIC
+    )
 elseif(CMAKE_COMPILER_IS_GNUCXX)
-          target_compile_options(
-                    PUBLIC -fno-elide-constructors
-)
+  target_compile_options(
+    PUBLIC -fno-elide-constructors
+    )
 endif(MSVC)
 # recommanded:
 # some appropriate wrapping condition for compiler specific options
@@ -201,12 +209,12 @@ endif(MSVC)
 # result: automate addition of required compile flags
 # errors if compiler isn't supported
 target_compile_features(${TARGET_NAME}
-          PUBLIC
-#                    cxx_auto_type
-#                    cxx_range_for
-          PRIVATE
-#                    cxx_variadic_templates
-)
+  PUBLIC
+  #                    cxx_auto_type
+  #                    cxx_range_for
+  PRIVATE
+  #                    cxx_variadic_templates
+  )
 
 # further information:
 # https://cmake.org/cmake/help/latest/manual/cmake-compile-features.7.html#
@@ -215,10 +223,10 @@ target_compile_features(${TARGET_NAME}
 #------------------- Executable generation -------------------
 
 # generate the project's executable target.
-add_executable(${TARGET_NAME}
-          src/file.cpp
-          src/file.h
-)
+add_executable(${TARGET_NAME} [WIN32]
+  src/file.cpp
+  src/file.h
+  )
 add_executable(${TARGET_NAME} ${SOURCE_FILES} ${RESOURCES})
 add_executable(my::${TARGET_NAME} ALIAS ${TARGET_NAME})
 
@@ -239,11 +247,11 @@ add_library(my::${TARGET_NAME} ALIAS ${TARGET_NAME})
 # generate export header automatically
 include(GenerateExportHeader)
 generate_export_header(${TARGET_NAME}
-          BASE_NAME ${TARGET_NAME}
-          EXPORT_MACRO_NAME ${TARGET_NAME}_EXPORTS
-          EXPORT_FILE_NAME ${TARGET_NAME}_EXPORTS.h
-          STATIC_DEFINE ${TARGET_NAME}_EXPORTS_BUILD_AS_STATIC
-)
+  BASE_NAME ${TARGET_NAME}
+  EXPORT_MACRO_NAME ${TARGET_NAME}_EXPORTS
+  EXPORT_FILE_NAME ${TARGET_NAME}_EXPORTS.h
+  STATIC_DEFINE ${TARGET_NAME}_EXPORTS_BUILD_AS_STATIC
+  )
 # recommanded:
 # namespaced aliases for libraries is strongly recommanded.
 # avoid STATIC/SHARED libraries, unless there is no other way
@@ -254,17 +262,17 @@ generate_export_header(${TARGET_NAME}
 # platform architecture (different architecture inclusion)
 # for detecting x86 use 4 as size 
 if(${CMAKE_SIZEOF_VOID_P} EQUAL "8")
-set(PROJECTNAME_ARCHITECTURE "x64")
+  set(PROJECTNAME_ARCHITECTURE "x64")
 else()
-set(PROJECTNAME_ARCHITECTURE "x86")
+  set(PROJECTNAME_ARCHITECTURE "x86")
 endif()
 #
 if(MSVC)
-if(CMAKE_CL_64 OR ${PROJECTNAME_ARCHITECTURE} EQUAL "x64")
-# ...
-else()
-# ...
-endif()
+  if(CMAKE_CL_64 OR ${PROJECTNAME_ARCHITECTURE} EQUAL "x64")
+    # ...
+  else()
+    # ...
+  endif()
 endif()
 
 # CMake scripts that find third-party libraries
@@ -278,7 +286,7 @@ find_package (cmakeScriptName REQUIRED)
 
 set(LIBRARY_ROOT_DIR path_to_root)
 if(NOT LIBRARY_ROOT_DIR)
-message(FATAL_ERROR "Library root path couldn't be found!")
+  message(FATAL_ERROR "Library root path couldn't be found!")
 endif()
 
 set(_INCLUDE_DIRECTORY ${LIBRARY_ROOT_DIR}/include)
@@ -290,7 +298,7 @@ message(${_LIBRARY_DIRECTORY})
 # thus there is not need to mention the extension of filename.
 find_path(LIBRARY_FILE fileName HINTS ${_LIBRARY_DIRECTORY} PATH_SUFFIXES lib)
 if (NOT LIBRARY_FILE)
-message(FATAL_ERROR "Library file couldn't be found!")
+  message(FATAL_ERROR "Library file couldn't be found!")
 endif()
 
 # creation of a list of all library headers
@@ -318,11 +326,11 @@ set(LIBRAY_DIRECTORY path_to_directory)
 
 # linking against the needed libraries:
 target_link_libraries(${TARGET_NAME}
-          PUBLIC ${LIBRAY_DIRECTORY}/fileName
-          PRIVATE ...
-          PUBLIC my::${LIBRARY_ONE_NAME} # namespaced
-          PRIVATE my::${LIBRARY_TWO_NAME} # namespaced
-)
+  PUBLIC ${LIBRAY_DIRECTORY}/fileName
+  PRIVATE ...
+  PUBLIC my::${LIBRARY_ONE_NAME} # namespaced
+  PRIVATE my::${LIBRARY_TWO_NAME} # namespaced
+  )
 # recommanded:
 # a link against namespaced targets has preference
 # dependencies can be public or PRIVATE
@@ -331,15 +339,15 @@ target_link_libraries(${TARGET_NAME}
 
 # different application entry points: main, WinMain
 set_target_properties(${TARGET_NAME} PROPERTIES
-          LINK_FLAGS /SUBSYSTEM:CONSOLE
-          LINK_FLAGS /SUBSYSTEM:WINDOWS
-)
+  LINK_FLAGS /SUBSYSTEM:CONSOLE
+  LINK_FLAGS /SUBSYSTEM:WINDOWS
+  )
 
 # including the include directories
 target_include_directories(${TARGET_NAME} BEFORE
-          PUBLIC ${INCLUDE_DIRECTORY}
-          PRIVATE ...
-)
+  PUBLIC ${INCLUDE_DIRECTORY}
+  PRIVATE ...
+  )
 # recommanded:
 # include_directories() is to be avoided
 # notes:
@@ -351,10 +359,54 @@ target_include_directories(${TARGET_NAME} BEFORE
 # copy library into target directory
 # must follow a generation event
 add_custom_command(TARGET ${TARGET_NAME} PRE_BUILD
-          COMMAND cmake -E copy_if_different # or additionally copy_directory
-          $ENV{UserProfile}.../Library.dll
-          $<TARGET_FILE_DIR:${TARGET_NAME}>
-)
+  COMMAND cmake -E copy_if_different # or additionally copy_directory
+  $ENV{UserProfile}.../Library.dll
+  $<TARGET_FILE_DIR:${TARGET_NAME}>
+  )
+
+
+#------------------- Performing supported tests -------------------
+
+# CMake CTest inclusion
+include(CTest)
+
+# enable testing (a series of needed magical procedures :) )
+enable_testing()
+
+
+# the test itself (sub directory)-------------------
+add_subdirectory(gtests) # wished test directory (Google test, Boost test etc.)
+
+project(${PROJECT_NAME}
+  VERSION 0.1.0.0
+  DESCRIPTION "Google Tests for ... project."
+  HOMEPAGE_URL "https://github.com/BirdSofts"
+  LANGUAGES CXX
+  )
+
+find_package(GTest CONFIG REQUIRED)
+
+list(APPEND HEADER_FILES
+  gtests.h
+  )
+
+list(APPEND SOURCE_FILES
+  gtests.cpp
+  )
+
+if(WIN32)
+  list(APPEND SOURCE_FILES ${HEADER_FILES})
+endif(WIN32)
+
+add_executable(${TARGET_NAME} ${SOURCE_FILES})
+
+target_link_libraries(${TARGET_NAME}
+  PUBLIC GTest::gtest GTest::gtest_main
+  )
+
+# so far achieved: each test in a separate file
+add_test(AllTestsIn${TARGET_NAME}1 ${TARGET_NAME})
+add_test(AllTestsIn${TARGET_NAME}2 ${TARGET_NAME})
 
 
 #------------------- Install settings -------------------
@@ -369,7 +421,7 @@ INCLUDE(InstallRequiredSystemLibraries)
 # 1. with less variables the code is more robust and readable
 target_link_libraries(${TARGET_NAME} PRIVATE my::${LIBRARY_ONE_NAME})
 if(WIN32)
-          target_link_libraries(${TARGET_NAME} PRIVATE my::${LIBRARY_TWO_NAME})
+  target_link_libraries(${TARGET_NAME} PRIVATE my::${LIBRARY_TWO_NAME})
 endif()
 # 2. create lists of source files explicitly and don't use file(GLOB)
 # 3. custom functions are bad ideas.
@@ -399,9 +451,9 @@ source_group(continuous_integration REGULAR_EXPRESSION .*[.]yml)
 
 
 
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#-----------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------
 #------------------- Commands -------------------
 #
 #------------------- Directory -------------------
@@ -449,9 +501,9 @@ source_group(continuous_integration REGULAR_EXPRESSION .*[.]yml)
 
 
 
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#-----------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------
 #------------------- CMakeSettings.json -------------------
 #
 # useful variables (usable in CMakeList.txt):
