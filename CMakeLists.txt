@@ -3,7 +3,7 @@
 #/ 
 #/ </summary>
 #/ <created>ʆϒʅ,30.03.2019</created>
-#/ <changed>ʆϒʅ,28.09.2019</changed>
+#/ <changed>ʆϒʅ,03.10.2019</changed>
 # *******************************************************************************************
 
 
@@ -373,27 +373,75 @@ include(CTest)
 # enable testing (a series of needed magical procedures :) )
 enable_testing()
 
-
-# the test itself (sub directory)-------------------
 add_subdirectory(gtests) # wished test directory (Google test, Boost test etc.)
+
+# the test itself (gtests sub directory)-------------------
+file(GLOB TESTS_FILES "gtests*.cpp")
+
+foreach(file ${TESTS_FILES})
+
+  string(REGEX REPLACE "^.*/|\.[^.]*$" "" plain ${file})
+  
+  set(TARGET_NAME ${plain})
+
+  set(PROJECT_NAME ${TARGET_NAME})
+
+  project(${PROJECT_NAME}
+    VERSION 0.1.0.0
+    DESCRIPTION "Google Tests of ..."
+    HOMEPAGE_URL "https://github.com/BirdSofts"
+    LANGUAGES CXX
+    )
+
+  find_package(GTest CONFIG REQUIRED)
+  
+  add_executable(${TARGET_NAME} ${file})
+
+  target_link_libraries(${TARGET_NAME}
+    PUBLIC GTest::gtest GTest::gtest_main
+    )
+
+# procedure: each test in a separate suitable file
+  add_test(AllTestsIn${TARGET_NAME} ${TARGET_NAME})
+
+endforeach()
+
+#------------------- GTest best practice -------------------
+
+
+include(CTest)
+
+find_package(GTest CONFIG REQUIRED)
+include(GoogleTest)
+
+enable_testing()
+
+add_subdirectory(lib...)
+#...
+
+add_subdirectory(gtests)
+
+# the test itself (gtests sub directory)-------------------
+
+cmake_minimum_required(VERSION 3.5)
+
+set(TARGET_NAME TestProject)
+
+set(PROJECT_NAME ${TARGET_NAME})
 
 project(${PROJECT_NAME}
   VERSION 0.1.0.0
-  DESCRIPTION "Google Tests for ... project."
-  HOMEPAGE_URL "https://github.com/BirdSofts"
+  DESCRIPTION "Google Tests of Qt Application."
+  HOMEPAGE_URL "https://github.com/BirdSofts/QtApp"
   LANGUAGES CXX
   )
-
-find_package(GTest CONFIG REQUIRED)
 
 list(APPEND HEADER_FILES
   gtests.h
   )
-
 list(APPEND SOURCE_FILES
   gtests.cpp
   )
-
 if(WIN32)
   list(APPEND SOURCE_FILES ${HEADER_FILES})
 endif(WIN32)
@@ -404,9 +452,12 @@ target_link_libraries(${TARGET_NAME}
   PUBLIC GTest::gtest GTest::gtest_main
   )
 
-# so far achieved: each test in a separate file
-add_test(AllTestsIn${TARGET_NAME}1 ${TARGET_NAME})
-add_test(AllTestsIn${TARGET_NAME}2 ${TARGET_NAME})
+target_link_libraries(${TARGET_NAME}
+  PUBLIC GTest::gtest GTest::gtest_main
+  PUBLIC lib...
+  )
+
+gtest_discover_tests(${TARGET_NAME} NO_PRETTY_TYPES NO_PRETTY_VALUES)
 
 
 #------------------- Install settings -------------------
