@@ -1,14 +1,11 @@
 ﻿# ********************************************************************************
 #/ <summary>
-#/ 
+#/
 #/ </summary>
 #/ <created>ʆϒʅ,04.04.2019</created>
-#/ <changed>ʆϒʅ,28.09.2019</changed>
+#/ <changed>ʆϒʅ,14.10.2019</changed>
 # ********************************************************************************
 
-# CMakeList.txt : CMake project for LibraryUsage, include source and define
-# project specific logic here.
-#
 cmake_minimum_required (VERSION 3.8 FATAL_ERROR)
 
 # option: link to the shared version
@@ -52,5 +49,3 @@ if(${LINK_SHARED_LIB} MATCHES ON)
 endif()
 
 target_link_libraries(${TARGET_NAME} ${PROJECT_LINK_LIBS})
-
-# TODO: Add tests and install targets if needed.

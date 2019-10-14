@@ -3,12 +3,8 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,04.04.2019</created>
-/// <changed>ʆϒʅ,10.04.2019</changed>
+/// <changed>ʆϒʅ,14.10.2019</changed>
 // ********************************************************************************
-
-// LibraryUsage.cpp : Defines the entry point for the application.
-//
-
 
 #include "StaticAndSharedLibrary.h"
 

@@ -1,14 +1,11 @@
 ﻿# ********************************************************************************
 #/ <summary>
-#/ 
+#/
 #/ </summary>
 #/ <created>ʆϒʅ,03.04.2019</created>
-#/ <changed>ʆϒʅ,28.09.2019</changed>
+#/ <changed>ʆϒʅ,14.10.2019</changed>
 # ********************************************************************************
 
-# CMakeList.txt : CMake project for StaticAndSharedLibrary, include source and define
-# project specific logic here.
-#
 cmake_minimum_required (VERSION 3.8 FATAL_ERROR)
 
 # option: build a shared version
@@ -50,5 +47,3 @@ if(${BUILD_SHARED_LIB} MATCHES ON)
 else()
   add_library (${TARGET_NAME} STATIC ${SOURCE_FILES})
 endif()
-
-# TODO: Add tests and install targets if needed.

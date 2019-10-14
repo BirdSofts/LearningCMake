@@ -3,11 +3,12 @@
 /// 
 /// </summary>
 /// <created>ʆϒʅ,04.04.2019</created>
-/// <changed>ʆϒʅ,10.04.2019</changed>
+/// <changed>ʆϒʅ,14.10.2019</changed>
 // ********************************************************************************
 
 #ifndef STATICANDSHAREDLIBRARY_EXPORTS_H
 #define STATICANDSHAREDLIBRARY_EXPORTS_H
+
 
 #ifdef WIN32
 
@@ -21,5 +22,6 @@
 #define LIBRARY_EXPORT
 
 #endif // WIN32
+
 
 #endif // STATICANDSHAREDLIBRARY_EXPORTS_H

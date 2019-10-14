@@ -1,11 +1,10 @@
 ﻿# *******************************************************************************************
 #/ <summary>
-#/ 
+#/
 #/ </summary>
 #/ <created>ʆϒʅ,30.03.2019</created>
-#/ <changed>ʆϒʅ,03.10.2019</changed>
+#/ <changed>ʆϒʅ,14.10.2019</changed>
 # *******************************************************************************************
-
 
 #-----------------------------------------------------------------------------------------------------------
 ## Note that the projects in this repository are perfectly compilable using CMake,
@@ -35,7 +34,10 @@
 # Upper case words don't ever give up yelling! :)
 
 # Nerd Snow's proposal
-# pleas get rid of not needed and old stuff! :)
+# please get rid of not needed and old stuff! :)
+
+# Note that before continuing, it is strongly recommended to find a package manager under windows,
+# which can provide easiness here and there, considering an advanced fight through a build system!
 
 
 #-----------------------------------------------------------------------------------------------------------
@@ -260,7 +262,7 @@ generate_export_header(${TARGET_NAME}
 #------------------- Inclusion, Dependency and library usage -------------------
 
 # platform architecture (different architecture inclusion)
-# for detecting x86 use 4 as size 
+# for detecting x86 use 4 as size
 if(${CMAKE_SIZEOF_VOID_P} EQUAL "8")
   set(PROJECTNAME_ARCHITECTURE "x64")
 else()
@@ -381,7 +383,7 @@ file(GLOB TESTS_FILES "gtests*.cpp")
 foreach(file ${TESTS_FILES})
 
   string(REGEX REPLACE "^.*/|\.[^.]*$" "" plain ${file})
-  
+
   set(TARGET_NAME ${plain})
 
   set(PROJECT_NAME ${TARGET_NAME})
@@ -394,14 +396,14 @@ foreach(file ${TESTS_FILES})
     )
 
   find_package(GTest CONFIG REQUIRED)
-  
+
   add_executable(${TARGET_NAME} ${file})
 
   target_link_libraries(${TARGET_NAME}
     PUBLIC GTest::gtest GTest::gtest_main
     )
 
-# procedure: each test in a separate suitable file
+  # procedure: each test in a separate suitable file
   add_test(AllTestsIn${TARGET_NAME} ${TARGET_NAME})
 
 endforeach()
@@ -431,8 +433,8 @@ set(PROJECT_NAME ${TARGET_NAME})
 
 project(${PROJECT_NAME}
   VERSION 0.1.0.0
-  DESCRIPTION "Google Tests of Qt Application."
-  HOMEPAGE_URL "https://github.com/BirdSofts/QtApp"
+  DESCRIPTION "Google Tests of ..."
+  HOMEPAGE_URL "https://github.com/BirdSofts"
   LANGUAGES CXX
   )
 
