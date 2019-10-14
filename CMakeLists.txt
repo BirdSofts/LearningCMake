@@ -524,6 +524,10 @@ source_group(continuous_integration REGULAR_EXPRESSION .*[.]yml)
 # change directory                    chdir build-path
 # build in directory                  cmake [-A Win32, x64, ARM, ARM64] source-path
 # source directory example            cmake ..\
+
+# using toolchain provided by vcpkg: (note: remember cleaning the build directory)
+#     cmake -A x64 ..\ "-DCMAKE_TOOLCHAIN_FILE=C:/src/vcpkg/scripts/buildsystems/vcpkg.cmake"
+
 # build project                       cmake --build [--clean-first] <dir>
 #-------
 
@@ -577,3 +581,4 @@ source_group(continuous_integration REGULAR_EXPRESSION .*[.]yml)
 # https://github.com/halex2005/CMakeHelpers
 # https://docs.microsoft.com/
 # https://cmake.org/cmake/help/latest/
+# https://vcpkg.readthedocs.io/en/latest/

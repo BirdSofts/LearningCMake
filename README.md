@@ -39,7 +39,7 @@ I appreciate any contribution from anyone, who sees that the project deserves hi
 # References
 <table>
 <tr>
-<td><a href="https://cmake.org/cmake/help/latest/">CMake Documentation</a></td>
+<td><a href="https://www.slideshare.net/DanielPfeifer1/cmake-48475415">CMake - Introduction and best practices</a></td>
 </tr>
 <tr>
 <td><a href="http://derekmolloy.ie/hello-world-introductions-to-cmake/">Introduction to CMake by Example</a></td>
@@ -52,6 +52,18 @@ I appreciate any contribution from anyone, who sees that the project deserves hi
 </tr>
 <tr>
 <td><a href="https://stackoverflow.com">Stackoverflow</a></td>
+</tr>
+<tr>
+<td><a href="https://github.com/halex2005/CMakeHelpers">CMakeHelpers on GitHub</a></td>
+</tr>
+<tr>
+<td><a href="https://cmake.org/cmake/help/latest/">Microsoft Documentation</a></td>
+</tr>
+<tr>
+<td><a href="https://cmake.org/cmake/help/latest/">CMake Documentation</a></td>
+</tr>
+<tr>
+<td><a href="https://vcpkg.readthedocs.io/en/latest/">VCpkg Documentation</a></td>
 </tr>
 </table>
 
